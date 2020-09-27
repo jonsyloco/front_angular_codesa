@@ -1,0 +1,85 @@
+<div class="card text-white">
+    <div class="card-header">{{titulo}}</div>
+
+    <div class="card-body">
+
+        <div class="alert alert-danger" *ngIf="erroresBack.length > 0">
+            <ul>
+                <li *ngFor="let err of erroresBack">
+                    {{err}}
+                </li>
+            </ul>
+
+        </div>
+
+
+        <form action="" #formularioVariable="ngForm">
+            <div class="form">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input readonly=true type="text" class="form-control" placeholder="id" name="id" [(ngModel)]="usuario.idUsuario">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" placeholder="Nombre" name="nombre"
+                            [(ngModel)]="usuario.nombre" required minlength="3" #nombreVariable="ngModel">
+
+                        <!-- contenedor de validacion -->
+                        <div class="alert alert-danger"
+                            *ngIf="nombreVariable.invalid && (nombreVariable.dirty || nombreVariable.touched)">
+                            <!-- mensaje de error solo para el required -->
+                            <div *ngIf="nombreVariable.errors.required">
+                                El campo nombre Requerido
+                            </div>
+                            <!-- mensaje de error para el tamaño de caracteres del texto -->
+                            <div *ngIf="nombreVariable.errors.minlength">
+                                El tamaño minino debe ser de 3 caracteres
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select class="form-control" name="rol" required [(ngModel)]="usuario.idRol"
+                            #apellidoVariable="ngModel"
+                            (change)="capturarRolSelect()">
+                            <option value="1">ADMINISTRADOR</option>
+                            <option value="2">AUDITOR</option>
+                            <option value="3" >AUXILIAR</option>
+                        </select>                 
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <select class="form-control" name="activo" required [(ngModel)]="usuario.activo">
+                            <option value="1" selected>ACTIVO</option>
+                            <option value="0">INACTIVO</option>
+                        </select>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="card-footer" *ngIf="usuario.idUsuario else crear">
+        <button class="btn btn-success" (click)="crearusuario()"
+            [disabled]="(formularioVariable.form.valid == false)?true:false">Actualizar</button>
+    </div>
+
+    <ng-template #crear>
+        <div class="card-footer">
+            <button class="btn btn-primary" (click)="crearusuario()"
+                [disabled]="(formularioVariable.form.valid == false)?true:false">Crear</button>
+        </div>
+
+    </ng-template>
+</div>
